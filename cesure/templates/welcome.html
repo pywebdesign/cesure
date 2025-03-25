@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cesure Art Gallery - Welcome</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <style>
+        .welcome-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .welcome-section h2 {
+            margin-top: 0;
+            color: #4a4a4a;
+        }
+        .user-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .feature-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-card h3 {
+            margin-top: 0;
+            color: #4a4a4a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Cesure Art Gallery</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/artworks">Artworks</a>
+            <a href="/artists">Artists</a>
+            <a href="/competitions">Competitions</a>
+            <a href="/events">Events</a>
+            <a href="/users/me">My Profile</a>
+            <a href="/auth/logout">Logout</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <section class="welcome-section">
+            <h2>Welcome, {{ user.username }}!</h2>
+            <p>Thank you for being part of our art community.</p>
+            
+            <div class="user-info">
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Account Status:</strong> {% if user.is_active %}Active{% else %}Inactive{% endif %}</p>
+                <p><strong>Email Verification:</strong> {% if user.email_verified %}Verified{% else %}Not Verified{% endif %}</p>
+                
+                {% if not user.email_verified %}
+                <p>
+                    <a href="/auth/resend-verification" class="button">Resend Verification Email</a>
+                </p>
+                {% endif %}
+            </div>
+        </section>
+        
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>Browse Artworks</h3>
+                <p>Explore a diverse collection of artworks from talented artists across various styles and mediums.</p>
+                <a href="/artworks" class="button">View Gallery</a>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Discover Artists</h3>
+                <p>Connect with artists, view their portfolios, and learn about their creative journeys.</p>
+                <a href="/artists" class="button">Meet Artists</a>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Join Competitions</h3>
+                <p>Participate in art competitions, showcase your work, and win recognition and prizes.</p>
+                <a href="/competitions" class="button">View Competitions</a>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Attend Events</h3>
+                <p>Stay updated on upcoming exhibitions, workshops, and art events in your community.</p>
+                <a href="/events" class="button">See Events</a>
+            </div>
+            
+            <div class="feature-card">
+                <h3>Manage Your Profile</h3>
+                <p>Update your information, showcase your artwork, and build your presence in the art community.</p>
+                <a href="/users/me" class="button">Edit Profile</a>
+            </div>
+            
+            {% if user.is_admin %}
+            <div class="feature-card">
+                <h3>Admin Dashboard</h3>
+                <p>Manage users, artworks, and other content as an administrator of the platform.</p>
+                <a href="/admin" class="button">Admin Panel</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Cesure Art Gallery. All rights reserved.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=psql
+      - POSTGRES_DB=postgres
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      
+  web:
+    build: .
+    container_name: cesure-web
+    restart: always
+    ports:
+      - "8000:8000"
+      - "5678:5678"  # Debug port
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://postgres:psql@postgres:5432/postgres
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=psql
+      - POSTGRES_DB=postgres
+      - PYTHONDONTWRITEBYTECODE=1  # Prevents writing bytecode files
+      - PYTHONUNBUFFERED=1  # Force stdin, stdout, and stderr to be unbuffered
+    volumes:
+      - .:/app
+    command: "python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m uvicorn cesure.main:app --host 0.0.0.0 --port 8000 --reload"
